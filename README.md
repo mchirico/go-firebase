@@ -1,26 +1,4 @@
-
-
-
-[![Build Status](https://travis-ci.org/mchirico/go-firebase.svg?branch=master)](https://travis-ci.org/mchirico/go-firebase)
-[![codecov](https://codecov.io/gh/mchirico/go-firebase/branch/master/graph/badge.svg)](https://codecov.io/gh/mchirico/go-firebase)
-
-[![Build Status](https://mchirico.visualstudio.com/go-firebase/_apis/build/status/mchirico.go-firebase?branchName=master)](https://mchirico.visualstudio.com/go-firebase/_build/latest?definitionId=9&branchName=master)
-
-
 # go-firebase
-
-
-
-### Checklist:
-
-1. dockerPassword
-2. [CodeCov Token](https://codecov.io/gh/mchirico)
-3. No Caps in project
-4. MONGO_CONNECTION_STRING
-5. MONGO_DATABASE 
-6. Make Azure Boards Public
-7. More Cobra commands? (cobra add say)
-
 
 
 ## Build with vendor
