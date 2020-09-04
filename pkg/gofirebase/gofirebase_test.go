@@ -16,7 +16,7 @@ func TestReadWrite_Firebase(t *testing.T) {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel() // cancel when we are finished
 
-	number := 5
+	number := 9
 	doc := make(map[string]interface{})
 	doc["application"] = "FirebaseGo"
 	doc["function"] = "TestAuthenticate"
@@ -31,7 +31,7 @@ func TestReadWrite_Firebase(t *testing.T) {
 	result := dsnap.Data()
 
 	fmt.Printf("Document data: %v %v\n", result["random"].(int64), number)
-	if result["random"].(int64) != 5 {
+	if result["random"].(int64) != 9 {
 		t.Fatalf("Didn't return correct value\n")
 	}
 
