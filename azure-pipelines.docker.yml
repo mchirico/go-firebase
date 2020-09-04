@@ -13,7 +13,7 @@ variables:
   GOMAXPROCS: 9
   modulePath: '$(GOPATH)/src/github.com/$(build.repository.name)' # Path to the module's code
   dockerId: aipiggybot  
-  imageName: go-firebase  # Replace with the name of the image you want to publish
+  imageName: go-gofirebase  # Replace with the name of the image you want to publish
 
 
 steps:

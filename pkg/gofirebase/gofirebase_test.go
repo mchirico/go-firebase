@@ -1,4 +1,4 @@
-package firebase
+package gofirebase
 
 import (
 	"context"
@@ -25,9 +25,9 @@ func TestReadWrite_Firebase(t *testing.T) {
 
 	fb := &FB{Credentials: credentials, StorageBucket: StorageBucket}
 	fb.CreateApp(ctx)
-	fb.WriteMap(ctx, doc,"testGoFirebase","go-firebase-v4")
+	fb.WriteMap(ctx, doc,"testGoFirebase","go-gofirebase-v4")
 
-	dsnap, _ := fb.ReadMap(ctx, "testGoFirebase", "go-firebase-v4")
+	dsnap, _ := fb.ReadMap(ctx, "testGoFirebase", "go-gofirebase-v4")
 	result := dsnap.Data()
 
 	fmt.Printf("Document data: %v %v\n", result["random"].(int64), number)

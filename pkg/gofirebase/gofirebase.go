@@ -1,4 +1,4 @@
-package firebase
+package gofirebase
 
 import (
 	"cloud.google.com/go/firestore"
