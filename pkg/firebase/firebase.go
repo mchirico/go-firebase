@@ -4,7 +4,8 @@ import (
 	"cloud.google.com/go/firestore"
 	"cloud.google.com/go/storage"
 	"context"
-	firebase "firebase.google.com/go"
+
+	firebase "firebase.google.com/go/v4"
 	"fmt"
 	"github.com/mchirico/go-firebase/pkg/bucket"
 
@@ -26,7 +27,7 @@ type FB struct {
 	err          error
 }
 
-func (fb *FB) WriteMap(ctx context.Context, doc map[string]interface{}, collection string) {
+func (fb *FB) WriteMap(ctx context.Context, doc map[string]interface{}, collection string, Doc string) {
 	fb.Lock()
 	defer fb.Unlock()
 	client, err := fb.App.Firestore(ctx)
@@ -34,7 +35,7 @@ func (fb *FB) WriteMap(ctx context.Context, doc map[string]interface{}, collecti
 		log.Fatalln(err)
 	}
 
-	_, err = client.Collection(collection).Doc("FirebaseGo").Set(ctx, doc)
+	_, err = client.Collection(collection).Doc(Doc).Set(ctx, doc)
 
 	if err != nil {
 		log.Fatalf("Failed adding record: %v", err)
@@ -43,14 +44,14 @@ func (fb *FB) WriteMap(ctx context.Context, doc map[string]interface{}, collecti
 
 }
 
-func (fb *FB) ReadMap(ctx context.Context, path string, doc string) (*firestore.DocumentSnapshot,
+func (fb *FB) ReadMap(ctx context.Context, path string, Doc string) (*firestore.DocumentSnapshot,
 	error) {
 	fb.Lock()
 	defer fb.Unlock()
 	client, err := fb.App.Firestore(ctx)
 	defer client.Close()
 
-	dsnap, err := client.Collection(path).Doc(doc).Get(ctx)
+	dsnap, err := client.Collection(path).Doc(Doc).Get(ctx)
 	if err != nil {
 		return dsnap, err
 	}

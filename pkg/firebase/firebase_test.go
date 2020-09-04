@@ -4,14 +4,14 @@ import (
 	"context"
 	"fmt"
 	util "github.com/mchirico/go-firebase/pkg/utils"
-	"os"
 	"testing"
 )
 
 func TestReadWrite_Firebase(t *testing.T) {
 	credentials := "../../credentials/septapig-firebase-adminsdk.json"
 
-	StorageBucket := os.Getenv("FIREBASE_BUCKET")
+	//StorageBucket := os.Getenv("FIREBASE_BUCKET")
+	StorageBucket := "septapig.appspot.com"
 
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel() // cancel when we are finished
@@ -25,9 +25,9 @@ func TestReadWrite_Firebase(t *testing.T) {
 
 	fb := &FB{Credentials: credentials, StorageBucket: StorageBucket}
 	fb.CreateApp(ctx)
-	fb.WriteMap(ctx, doc,"testGoFirebase")
+	fb.WriteMap(ctx, doc,"testGoFirebase","go-firebase-v4")
 
-	dsnap, _ := fb.ReadMap(ctx, "testGoFirebase", "FirebaseGo")
+	dsnap, _ := fb.ReadMap(ctx, "testGoFirebase", "go-firebase-v4")
 	result := dsnap.Data()
 
 	fmt.Printf("Document data: %v %v\n", result["random"].(int64), number)
@@ -42,11 +42,11 @@ func TestReadWrite_Firebase(t *testing.T) {
 	util.Write(".slop/junk.txt", data, 0600)
 	fb.Bucket.Upload(ctx, ".slop/junk.txt")
 	util.RmDir(".slop")
-	err := fb.Bucket.DeleteFile(ctx, ".slop/junk.txt")
+	//err := fb.Bucket.DeleteFile(ctx, ".slop/junk.txt")
 
 
-	if err != nil {
-		t.Logf("Problem with buckets")
-	}
+	//if err != nil {
+	//	t.Logf("Problem with buckets")
+	//}
 
 }
