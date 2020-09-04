@@ -1,15 +1,13 @@
 package bucket
 
-
-
 import (
 	"cloud.google.com/go/storage"
-"context"
+	"context"
 
-"io"
-"io/ioutil"
-"os"
-"sync"
+	"io"
+	"io/ioutil"
+	"os"
+	"sync"
 )
 
 type Bucket struct {

@@ -4,6 +4,7 @@ import (
 	"cloud.google.com/go/firestore"
 	"cloud.google.com/go/storage"
 	"context"
+	"google.golang.org/api/iterator"
 
 	firebase "firebase.google.com/go/v4"
 	"fmt"
@@ -58,20 +59,35 @@ func (fb *FB) ReadMap(ctx context.Context, path string, Doc string) (*firestore.
 	return dsnap, err
 }
 
-func (fb *FB) Find(ctx context.Context, collection, path, op, value string) (*firestore.DocumentIterator, *firestore.Client) {
+func (fb *FB) Find(ctx context.Context, collection, path, op, value string) (map[string]interface{}, error) {
 	fb.Lock()
 	defer fb.Unlock()
 	client, err := fb.App.Firestore(ctx)
 	// You need to close
-	//defer client.Close()
+	defer client.Close()
 	if err != nil {
-		log.Fatalln(err)
+		return map[string]interface{}{}, err
 	}
 
 	// query := client.Collection(collection).Where("state", "==", "CA")
 	iter := client.Collection(collection).Where(path, op, value).Documents(ctx)
+	resultFind := map[string]interface{}{}
+	for {
+		doc, err := iter.Next()
+		if err == iterator.Done {
+			break
+		}
+		if err != nil {
+			return map[string]interface{}{}, err
+		}
+		fmt.Println(doc.Data())
+		for k, v := range doc.Data() {
+			resultFind[k] = v
+		}
 
-	return iter,client
+	}
+
+	return resultFind, nil
 
 }
 
