@@ -58,6 +58,23 @@ func (fb *FB) ReadMap(ctx context.Context, path string, Doc string) (*firestore.
 	return dsnap, err
 }
 
+func (fb *FB) Find(ctx context.Context, collection, path, op, value string) (*firestore.DocumentIterator, *firestore.Client) {
+	fb.Lock()
+	defer fb.Unlock()
+	client, err := fb.App.Firestore(ctx)
+	// You need to close
+	//defer client.Close()
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	// query := client.Collection(collection).Where("state", "==", "CA")
+	iter := client.Collection(collection).Where(path, op, value).Documents(ctx)
+
+	return iter,client
+
+}
+
 func (fb *FB) CreateApp(ctx context.Context) (*firebase.App, error) {
 	fb.Lock()
 	defer fb.Unlock()
