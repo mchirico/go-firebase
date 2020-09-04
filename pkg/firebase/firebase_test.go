@@ -42,11 +42,11 @@ func TestReadWrite_Firebase(t *testing.T) {
 	util.Write(".slop/junk.txt", data, 0600)
 	fb.Bucket.Upload(ctx, ".slop/junk.txt")
 	util.RmDir(".slop")
-	//err := fb.Bucket.DeleteFile(ctx, ".slop/junk.txt")
+	err := fb.Bucket.DeleteFile(ctx, ".slop/junk.txt")
 
 
-	//if err != nil {
-	//	t.Logf("Problem with buckets")
-	//}
+	if err != nil {
+		t.Logf("Problem with buckets")
+	}
 
 }
