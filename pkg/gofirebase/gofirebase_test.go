@@ -9,13 +9,15 @@ import (
 )
 
 func TestReadWrite_Firebase(t *testing.T) {
-	credentials := "../../credentials/septapig-firebase-adminsdk.json"
 
+	credentials := "../../credentials/septapig-firebase-adminsdk.json"
 	//StorageBucket := os.Getenv("FIREBASE_BUCKET")
 	StorageBucket := "septapig.appspot.com"
-
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel() // cancel when we are finished
+	fb := &FB{Credentials: credentials, StorageBucket: StorageBucket}
+	fb.CreateApp(ctx)
+
 
 	number := 9
 	doc := make(map[string]interface{})
@@ -24,8 +26,6 @@ func TestReadWrite_Firebase(t *testing.T) {
 	doc["test"] = "This is example text..."
 	doc["random"] = number
 
-	fb := &FB{Credentials: credentials, StorageBucket: StorageBucket}
-	fb.CreateApp(ctx)
 	fb.WriteMap(ctx, doc, "testGoFirebase", "go-gofirebase-v4")
 	fb.WriteMapCol2Doc2(ctx, doc, "testGoFirebase", "go-gofirebase-v4","updates","doc")
 
@@ -54,5 +54,37 @@ func TestReadWrite_Firebase(t *testing.T) {
 	if err != nil {
 		t.Logf("Problem with buckets")
 	}
+
+}
+
+func TestFB_WriteMapCol2Doc2(t *testing.T) {
+
+	credentials := "../../credentials/septapig-firebase-adminsdk.json"
+	//StorageBucket := os.Getenv("FIREBASE_BUCKET")
+	StorageBucket := "septapig.appspot.com"
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel() // cancel when we are finished
+	fb := &FB{Credentials: credentials, StorageBucket: StorageBucket}
+	fb.CreateApp(ctx)
+
+
+	number := 9
+	doc := make(map[string]interface{})
+	doc["application"] = "FirebaseGo"
+	doc["function"] = "TestAuthenticate"
+	doc["test"] = "This is example text..."
+	doc["random"] = number
+
+	fb.WriteMap(ctx, doc, "testGoFirebase", "go-gofirebase-v4")
+	fb.WriteMapCol2Doc2(ctx,doc,"testGoFirebase","go-gofirebase-v4","col2","doc2")
+	// resultFind, err := fb.Find(ctx, "testGoFirebase", "function", "==", "TestAuthenticate")
+	resultFind, err := fb.FindCol2Doc2(ctx, "testGoFirebase","go-gofirebase-v4" ,"col2",
+		"function", "==", "TestAuthenticate")
+	if len(resultFind) < 4 {
+		t.Fatalf("map not correct")
+	}
+	t.Log(len(resultFind),err)
+
+
 
 }
