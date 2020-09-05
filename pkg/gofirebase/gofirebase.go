@@ -45,6 +45,24 @@ func (fb *FB) WriteMap(ctx context.Context, doc map[string]interface{}, collecti
 
 }
 
+func (fb *FB) WriteMapCol2Doc2(ctx context.Context, doc map[string]interface{},
+	collection string, Doc string, collection2, Doc2 string) {
+	fb.Lock()
+	defer fb.Unlock()
+	client, err := fb.App.Firestore(ctx)
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	_, err = client.Collection(collection).Doc(Doc).Collection(collection2).Doc(Doc2).Set(ctx, doc)
+
+	if err != nil {
+		log.Fatalf("Failed adding record: %v", err)
+	}
+	defer client.Close()
+
+}
+
 func (fb *FB) ReadMap(ctx context.Context, path string, Doc string) (*firestore.DocumentSnapshot,
 	error) {
 	fb.Lock()

@@ -27,6 +27,7 @@ func TestReadWrite_Firebase(t *testing.T) {
 	fb := &FB{Credentials: credentials, StorageBucket: StorageBucket}
 	fb.CreateApp(ctx)
 	fb.WriteMap(ctx, doc, "testGoFirebase", "go-gofirebase-v4")
+	fb.WriteMapCol2Doc2(ctx, doc, "testGoFirebase", "go-gofirebase-v4","updates","doc")
 
 	resultFind, err := fb.Find(ctx, "testGoFirebase", "function", "==", "TestAuthenticate")
 
