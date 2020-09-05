@@ -18,7 +18,6 @@ func TestReadWrite_Firebase(t *testing.T) {
 	fb := &FB{Credentials: credentials, StorageBucket: StorageBucket}
 	fb.CreateApp(ctx)
 
-
 	number := 9
 	doc := make(map[string]interface{})
 	doc["application"] = "FirebaseGo"
@@ -27,7 +26,7 @@ func TestReadWrite_Firebase(t *testing.T) {
 	doc["random"] = number
 
 	fb.WriteMap(ctx, doc, "testGoFirebase", "go-gofirebase-v4")
-	fb.WriteMapCol2Doc2(ctx, doc, "testGoFirebase", "go-gofirebase-v4","updates","doc")
+	fb.WriteMapCol2Doc2(ctx, doc, "testGoFirebase", "go-gofirebase-v4", "updates", "doc")
 
 	resultFind, err := fb.Find(ctx, "testGoFirebase", "function", "==", "TestAuthenticate")
 
@@ -67,7 +66,6 @@ func TestFB_WriteMapCol2Doc2(t *testing.T) {
 	fb := &FB{Credentials: credentials, StorageBucket: StorageBucket}
 	fb.CreateApp(ctx)
 
-
 	number := 9
 	doc := make(map[string]interface{})
 	doc["application"] = "FirebaseGo"
@@ -76,15 +74,13 @@ func TestFB_WriteMapCol2Doc2(t *testing.T) {
 	doc["random"] = number
 
 	fb.WriteMap(ctx, doc, "testGoFirebase", "go-gofirebase-v4")
-	fb.WriteMapCol2Doc2(ctx,doc,"testGoFirebase","go-gofirebase-v4","col2","doc2")
+	fb.WriteMapCol2Doc2(ctx, doc, "testGoFirebase", "go-gofirebase-v4", "col2", "doc2")
 	// resultFind, err := fb.Find(ctx, "testGoFirebase", "function", "==", "TestAuthenticate")
-	resultFind, err := fb.FindCol2Doc2(ctx, "testGoFirebase","go-gofirebase-v4" ,"col2",
+	resultFind, err := fb.FindCol2Doc2(ctx, "testGoFirebase", "go-gofirebase-v4", "col2",
 		"function", "==", "TestAuthenticate")
 	if len(resultFind) < 4 {
 		t.Fatalf("map not correct")
 	}
-	t.Log(len(resultFind),err)
-
-
+	t.Log(len(resultFind), err)
 
 }
