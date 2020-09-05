@@ -77,28 +77,30 @@ func (fb *FB) ReadMap(ctx context.Context, path string, Doc string) (*firestore.
 	return dsnap, err
 }
 
-func (fb *FB) ReadCol(ctx context.Context, path string) (map[string]interface{}, error) {
+func (fb *FB) ReadCol(ctx context.Context, path string) ([]map[string]interface{}, error) {
 	fb.Lock()
 	defer fb.Unlock()
 	client, err := fb.App.Firestore(ctx)
 	if err != nil {
-		return map[string]interface{}{}, err
+		return []map[string]interface{}{}, err
 	}
 	defer client.Close()
 
 	iter := client.Collection(path).Documents(ctx)
-	resultFind := map[string]interface{}{}
+	resultFind := []map[string]interface{}{}
 	for {
 		doc, err := iter.Next()
 		if err == iterator.Done {
 			break
 		}
 		if err != nil {
-			return map[string]interface{}{}, err
+			return resultFind, err
 		}
+		m := map[string]interface{}{}
 		for k, v := range doc.Data() {
-			resultFind[k] = v
+			m[k] = v
 		}
+		resultFind = append(resultFind, m)
 
 	}
 	return resultFind, nil

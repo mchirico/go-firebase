@@ -22,10 +22,6 @@ func TestFB_WriteMapCol2Doc2(t *testing.T) {
 		t.Fatalf("err: %v\n", err)
 	}
 
-	for k, _ := range m {
-
-		fmt.Printf("k: %v\n", k)
-
-	}
+	fmt.Printf("m[0]: %v\n", m[0])
 
 }
