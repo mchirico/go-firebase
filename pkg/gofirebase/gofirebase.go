@@ -77,6 +77,36 @@ func (fb *FB) ReadMap(ctx context.Context, path string, Doc string) (*firestore.
 	return dsnap, err
 }
 
+func (fb *FB) ReadCol(ctx context.Context, path string) ([]map[string]interface{}, error) {
+	fb.Lock()
+	defer fb.Unlock()
+	client, err := fb.App.Firestore(ctx)
+	if err != nil {
+		return []map[string]interface{}{}, err
+	}
+	defer client.Close()
+
+	iter := client.Collection(path).Documents(ctx)
+	resultFind := []map[string]interface{}{}
+	for {
+		doc, err := iter.Next()
+		if err == iterator.Done {
+			break
+		}
+		if err != nil {
+			return resultFind, err
+		}
+		m := map[string]interface{}{}
+		for k, v := range doc.Data() {
+			fmt.Printf("K: %v\n",k)
+			m[k] = v
+		}
+		resultFind = append(resultFind, m)
+
+	}
+	return resultFind, nil
+}
+
 func (fb *FB) ReadMapCol2Doc2(ctx context.Context, path, Doc, col2, Doc2 string) (*firestore.DocumentSnapshot,
 	error) {
 	fb.Lock()
@@ -112,7 +142,7 @@ func (fb *FB) Find(ctx context.Context, collection, path, op, value string) (map
 		if err != nil {
 			return map[string]interface{}{}, err
 		}
-		fmt.Println(doc.Data())
+
 		for k, v := range doc.Data() {
 			resultFind[k] = v
 		}
@@ -123,7 +153,7 @@ func (fb *FB) Find(ctx context.Context, collection, path, op, value string) (map
 
 }
 
-func (fb *FB) FindCol2Doc2(ctx context.Context, collection,Doc, col2,  path, op, value string) (map[string]interface{}, error) {
+func (fb *FB) FindCol2Doc2(ctx context.Context, collection, Doc, col2, path, op, value string) (map[string]interface{}, error) {
 	fb.Lock()
 	defer fb.Unlock()
 	client, err := fb.App.Firestore(ctx)
