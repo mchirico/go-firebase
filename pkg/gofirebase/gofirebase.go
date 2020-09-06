@@ -98,6 +98,7 @@ func (fb *FB) ReadCol(ctx context.Context, path string) ([]map[string]interface{
 		}
 		m := map[string]interface{}{}
 		for k, v := range doc.Data() {
+			fmt.Printf("K: %v\n",k)
 			m[k] = v
 		}
 		resultFind = append(resultFind, m)

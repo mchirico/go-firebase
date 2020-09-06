@@ -2,9 +2,9 @@ package aggregate
 
 import (
 	"context"
-	"fmt"
 	"github.com/mchirico/go-firebase/pkg/gofirebase"
 	"testing"
+	"fmt"
 )
 
 func TestFB_WriteMapCol2Doc2(t *testing.T) {
@@ -17,11 +17,9 @@ func TestFB_WriteMapCol2Doc2(t *testing.T) {
 	fb := &gofirebase.FB{Credentials: credentials, StorageBucket: StorageBucket}
 	fb.CreateApp(ctx)
 
-	m, err := fb.ReadCol(ctx, "Agil")
-	if err != nil {
-		t.Fatalf("err: %v\n", err)
+	m, _ := fb.ReadCol(ctx, "Agil")
+	for i,v := range m {
+		fmt.Printf("%v,%v\n",i,v)
 	}
-
-	fmt.Printf("m[0]: %v\n", m[0])
 
 }
