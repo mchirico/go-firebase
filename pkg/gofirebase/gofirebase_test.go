@@ -30,7 +30,7 @@ func TestReadWrite_Firebase(t *testing.T) {
 
 	resultFind, err := fb.Find(ctx, "testGoFirebase", "function", "==", "TestAuthenticate")
 
-	if resultFind["test"] != "This is example text..." {
+	if resultFind[0]["test"] != "This is example text..." {
 		t.Fatalf("Find not working")
 	}
 

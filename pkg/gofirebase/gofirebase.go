@@ -121,67 +121,69 @@ func (fb *FB) ReadMapCol2Doc2(ctx context.Context, path, Doc, col2, Doc2 string)
 	return dsnap, err
 }
 
-func (fb *FB) Find(ctx context.Context, collection, path, op string, value interface{}) (map[string]interface{}, error) {
+func (fb *FB) Find(ctx context.Context, collection, path, op string, value interface{}) ([]map[string]interface{}, error) {
 	fb.Lock()
 	defer fb.Unlock()
 	client, err := fb.App.Firestore(ctx)
 	// You need to close
 	defer client.Close()
 	if err != nil {
-		return map[string]interface{}{}, err
+		return []map[string]interface{}{}, err
 	}
 
 	// query := client.Collection(collection).Where("state", "==", "CA")
 	iter := client.Collection(collection).Where(path, op, value).Documents(ctx)
 	resultFind := map[string]interface{}{}
+	total := []map[string]interface{}{}
 	for {
 		doc, err := iter.Next()
 		if err == iterator.Done {
 			break
 		}
 		if err != nil {
-			return map[string]interface{}{}, err
+			return []map[string]interface{}{}, err
 		}
 
 		for k, v := range doc.Data() {
 			resultFind[k] = v
 		}
-
+		total = append(total, resultFind)
 	}
 
-	return resultFind, nil
+	return total, nil
 
 }
 
-func (fb *FB) FindCol2Doc2(ctx context.Context, collection, Doc, col2, path, op string, value interface{}) (map[string]interface{}, error) {
+func (fb *FB) FindCol2Doc2(ctx context.Context, collection, Doc, col2, path, op string, value interface{}) ([]map[string]interface{}, error) {
 	fb.Lock()
 	defer fb.Unlock()
 	client, err := fb.App.Firestore(ctx)
 	// You need to close
 	defer client.Close()
 	if err != nil {
-		return map[string]interface{}{}, err
+		return []map[string]interface{}{}, err
 	}
 
 	// query := client.Collection(collection).Where("state", "==", "CA")
 	iter := client.Collection(collection).Doc(Doc).Collection(col2).Where(path, op, value).Documents(ctx)
 	resultFind := map[string]interface{}{}
+	total := []map[string]interface{}{}
 	for {
 		doc, err := iter.Next()
 		if err == iterator.Done {
 			break
 		}
 		if err != nil {
-			return map[string]interface{}{}, err
+			return []map[string]interface{}{}, err
 		}
 		fmt.Println(doc.Data())
 		for k, v := range doc.Data() {
 			resultFind[k] = v
 		}
-
+		total = append(total, resultFind)
 	}
 
-	return resultFind, nil
+	return total, nil
 
 }
 
