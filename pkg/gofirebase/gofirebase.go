@@ -98,7 +98,7 @@ func (fb *FB) ReadCol(ctx context.Context, path string) ([]map[string]interface{
 		}
 		m := map[string]interface{}{}
 		for k, v := range doc.Data() {
-			fmt.Printf("K: %v\n",k)
+			fmt.Printf("K: %v\n", k)
 			m[k] = v
 		}
 		resultFind = append(resultFind, m)
@@ -121,7 +121,7 @@ func (fb *FB) ReadMapCol2Doc2(ctx context.Context, path, Doc, col2, Doc2 string)
 	return dsnap, err
 }
 
-func (fb *FB) Find(ctx context.Context, collection, path, op, value string) (map[string]interface{}, error) {
+func (fb *FB) Find(ctx context.Context, collection, path, op string, value interface{}) (map[string]interface{}, error) {
 	fb.Lock()
 	defer fb.Unlock()
 	client, err := fb.App.Firestore(ctx)
@@ -153,7 +153,7 @@ func (fb *FB) Find(ctx context.Context, collection, path, op, value string) (map
 
 }
 
-func (fb *FB) FindCol2Doc2(ctx context.Context, collection, Doc, col2, path, op, value string) (map[string]interface{}, error) {
+func (fb *FB) FindCol2Doc2(ctx context.Context, collection, Doc, col2, path, op string, value interface{}) (map[string]interface{}, error) {
 	fb.Lock()
 	defer fb.Unlock()
 	client, err := fb.App.Firestore(ctx)
