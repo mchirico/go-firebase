@@ -1,3 +1,4 @@
+![Go](https://github.com/mchirico/go-firebase/workflows/Go/badge.svg)
 # go-firebase
 
 
